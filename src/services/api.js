@@ -13,7 +13,7 @@ export const fetchClients = async () => {
       });
 
       if (!response.ok) {
-         throw new Error('The fetching process of client list failed');
+         throw new Error('The fetching process of client list has failed');
       }
 
       const fetchedData = await response.json();
