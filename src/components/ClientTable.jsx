@@ -7,7 +7,6 @@ import {
 } from "@tanstack/react-table";
 import { getFormattedClients } from "../services/formattedApi";
 import Filters from "./Filters";
-import FilterSelect from "./FilterSelect";
 
 export const columns = [
   { accessorKey: "name", header: "Název/Jméno" },
@@ -40,7 +39,6 @@ export default function ClientTable() {
   const table = useReactTable({
     data,
     columns,
-    //can access via table.getState
     state: {
       columnFilters,
     },
