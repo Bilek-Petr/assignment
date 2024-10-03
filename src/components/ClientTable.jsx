@@ -3,21 +3,25 @@ import {
   useReactTable,
   getCoreRowModel,
   flexRender,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
 import { getFormattedClients } from "../services/formattedApi";
+import Filters from "./Filters";
 
 const columns = [
-  { accessorKey: "name", header: "Name", size: 200 },
-  { accessorKey: "rating", header: "Rating", size: 75 },
+  { accessorKey: "name", header: "Name" },
+  { accessorKey: "rating", header: "Rating" },
   { accessorKey: "ownerFullName", header: "Owner" },
   { accessorKey: "regNumber", header: "Reg. Number" },
-  { accessorKey: "city", header: "City", size: 175 },
-  { accessorKey: "category", header: "Category", size: 175 },
+  { accessorKey: "city", header: "City" },
+  { accessorKey: "category", header: "Category" },
 ];
 
 export default function ClientTable() {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
+
+  const [columnFilters, setColumnFilters] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,9 +39,16 @@ export default function ClientTable() {
   const table = useReactTable({
     data,
     columns,
+    //can access via table.getState
+    state: {
+      columnFilters,
+    },
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     columnResizeMode: "onChange",
   });
+
+  console.log(columnFilters);
 
   const renderTableHeader = () => (
     <thead>
@@ -77,12 +88,18 @@ export default function ClientTable() {
     </tbody>
   );
 
-  if (error) return <div>{error}</div>;
-
-  return (
-    <table className="border border-slate-500" width={table.getTotalSize()}>
-      {renderTableHeader()}
-      {renderTableBody()}
-    </table>
+  return !error ? (
+    <>
+      <Filters
+        columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
+      ></Filters>
+      <table className="border border-slate-500" width={table.getTotalSize()}>
+        {renderTableHeader()}
+        {renderTableBody()}
+      </table>
+    </>
+  ) : (
+    <div>{error}</div>
   );
 }
