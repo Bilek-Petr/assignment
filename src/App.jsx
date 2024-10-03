@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import ClientList from './components/ClientList';
+import { useState } from "react";
+import ClientList from "./components/ClientList";
+import ClientTable from "./components/ClientTable";
 
 function App() {
-   return (
-      <>
-         <h1>Vite + React</h1>
-         <ClientList></ClientList>
-      </>
-   );
+  return (
+    <>
+      <ClientTable></ClientTable>
+    </>
+  );
 }
 
 export default App;
