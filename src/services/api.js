@@ -1,5 +1,3 @@
-// API CALL to get the clients
-
 export const fetchClients = async () => {
   try {
     const response = await fetch(import.meta.env.VITE_API_URL, {
