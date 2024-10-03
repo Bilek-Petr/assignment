@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import FilterSelect from "./FilterSelect";
 
-export default function Filters({ columnFilters, setColumnFilters }) {
-  const clientName =
-    columnFilters.find((filter) => filter.id === "name")?.value || "";
+export default function Filters({ setColumnFilters }) {
+  const [inputValue, setInputValue] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("name");
 
   const onFilterChange = (id, value) => {
-    setColumnFilters((prev) =>
-      prev.filter((f) => f.id !== "name").concat({ id, value }),
-    );
+    setColumnFilters([{ id, value }]);
   };
+
+  useEffect(() => {
+    setInputValue("");
+    onFilterChange(selectedFilter, "");
+  }, [selectedFilter]);
 
   return (
     <div className="flex gap-6">
@@ -20,12 +23,20 @@ export default function Filters({ columnFilters, setColumnFilters }) {
           type="text"
           placeholder="Hledat..."
           className="h-10 w-full rounded-full border-[1px] border-gray-300 bg-gray-100 pl-10 transition-all duration-300 ease-in-out hover:border-cyan-400 focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400"
-          value={clientName}
-          onChange={(e) => onFilterChange("name", e.target.value)}
+          value={inputValue}
+          onChange={(e) => {
+            const value = e.target.value;
+            setInputValue(value);
+            onFilterChange(selectedFilter, value);
+          }}
         />
       </div>
 
-      <FilterSelect></FilterSelect>
+      <FilterSelect
+        selectedFilter={selectedFilter}
+        setSelectedFilter={setSelectedFilter}
+        setColumnFilters={setColumnFilters}
+      />
     </div>
   );
 }
