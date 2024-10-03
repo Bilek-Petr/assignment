@@ -7,14 +7,15 @@ import {
 } from "@tanstack/react-table";
 import { getFormattedClients } from "../services/formattedApi";
 import Filters from "./Filters";
+import FilterSelect from "./FilterSelect";
 
-const columns = [
-  { accessorKey: "name", header: "Name" },
+export const columns = [
+  { accessorKey: "name", header: "Název/Jméno" },
   { accessorKey: "rating", header: "Rating" },
-  { accessorKey: "ownerFullName", header: "Owner" },
-  { accessorKey: "regNumber", header: "Reg. Number" },
-  { accessorKey: "city", header: "City" },
-  { accessorKey: "category", header: "Category" },
+  { accessorKey: "ownerFullName", header: "Vlastník" },
+  { accessorKey: "regNumber", header: "IČO" },
+  { accessorKey: "city", header: "Město" },
+  { accessorKey: "category", header: "Kategorie" },
 ];
 
 export default function ClientTable() {
@@ -94,6 +95,7 @@ export default function ClientTable() {
         columnFilters={columnFilters}
         setColumnFilters={setColumnFilters}
       ></Filters>
+
       <table className="border border-slate-500" width={table.getTotalSize()}>
         {renderTableHeader()}
         {renderTableBody()}
