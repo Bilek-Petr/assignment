@@ -2,17 +2,23 @@ import React, { useState, useEffect } from "react";
 import {
   useReactTable,
   getCoreRowModel,
-  flexRender,
   getFilteredRowModel,
+  getSortedRowModel,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 import { getFormattedClients } from "../services/formattedApi";
 import Filters from "./Filters";
+import TableHeader from "./Table/TableHeader";
+import TableBody from "./Table/TableBody";
+import Pagination from "./Table/Pagination";
+import Loading from "./Loading";
+import Error from "./Error";
 
 export const columns = [
   { accessorKey: "name", header: "Název/Jméno" },
   { accessorKey: "rating", header: "Rating" },
   { accessorKey: "ownerFullName", header: "Vlastník" },
-  { accessorKey: "regNumber", header: "IČO" },
+  { accessorKey: "regNumber", header: "IČO", enableSorting: false },
   { accessorKey: "city", header: "Město" },
   { accessorKey: "category", header: "Kategorie" },
 ];
@@ -20,7 +26,7 @@ export const columns = [
 export default function ClientTable() {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
-
+  const [loading, setLoading] = useState(true);
   const [columnFilters, setColumnFilters] = useState([]);
 
   useEffect(() => {
@@ -30,6 +36,8 @@ export default function ClientTable() {
         setData(formattedData);
       } catch (err) {
         setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -44,62 +52,28 @@ export default function ClientTable() {
     },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     columnResizeMode: "onChange",
   });
 
-  console.log(columnFilters);
-
-  const renderTableHeader = () => (
-    <thead>
-      {table.getHeaderGroups().map((headerGroup) => (
-        <tr key={headerGroup.id}>
-          {headerGroup.headers.map((header) => (
-            <th key={header.id} width={header.getSize()} className="relative">
-              {flexRender(header.column.columnDef.header, header.getContext())}
-
-              <div
-                onMouseDown={header.getResizeHandler()}
-                onTouchStart={header.getResizeHandler()}
-                className={`absolute right-0 top-0 h-full w-[4px] cursor-w-resize bg-red-500 ${header.column.getIsResizing() ? "w-2 bg-blue-500" : ""}`}
-              ></div>
-            </th>
-          ))}
-        </tr>
-      ))}
-    </thead>
-  );
-
-  const renderTableBody = () => (
-    <tbody>
-      {table.getRowModel().rows.map((row) => (
-        <tr key={row.id}>
-          {row.getVisibleCells().map((cell) => (
-            <td
-              key={cell.id}
-              width={cell.column.getSize()}
-              className="border border-slate-500"
-            >
-              {flexRender(cell.column.columnDef.cell, cell.getContext())}
-            </td>
-          ))}
-        </tr>
-      ))}
-    </tbody>
-  );
+  if (loading) {
+    return <Loading />;
+  }
 
   return !error ? (
     <>
       <Filters
         columnFilters={columnFilters}
         setColumnFilters={setColumnFilters}
-      ></Filters>
-
+      />
       <table className="border border-slate-500" width={table.getTotalSize()}>
-        {renderTableHeader()}
-        {renderTableBody()}
+        <TableHeader table={table} />
+        <TableBody table={table} />
       </table>
+      <Pagination table={table} />
     </>
   ) : (
-    <div>{error}</div>
+    <Error message={error} />
   );
 }
