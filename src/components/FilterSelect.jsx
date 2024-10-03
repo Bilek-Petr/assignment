@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { columns } from "./ClientTable";
 import { FaFilter } from "react-icons/fa";
 
