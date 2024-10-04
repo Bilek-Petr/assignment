@@ -15,12 +15,28 @@ import Loading from "./Loading";
 import Error from "./Error";
 
 export const columns = [
-  { accessorKey: "name", header: "Název/Jméno" },
-  { accessorKey: "rating", header: "Rating" },
-  { accessorKey: "ownerFullName", header: "Vlastník" },
-  { accessorKey: "regNumber", header: "IČO", enableSorting: false },
+  {
+    accessorKey: "name",
+    header: "Název/Jméno",
+  },
+  {
+    accessorKey: "rating",
+    header: "Rating",
+    size: 20,
+  },
+  {
+    accessorKey: "ownerFullName",
+    header: "Vlastník",
+  },
+  {
+    accessorKey: "regNumber",
+    header: "IČO",
+  },
   { accessorKey: "city", header: "Město" },
-  { accessorKey: "category", header: "Kategorie" },
+  {
+    accessorKey: "category",
+    header: "Kategorie",
+  },
 ];
 
 export default function ClientTable() {
@@ -63,15 +79,17 @@ export default function ClientTable() {
 
   return !error ? (
     <>
-      <Filters
-        columnFilters={columnFilters}
-        setColumnFilters={setColumnFilters}
-      />
-      <table className="border border-slate-500" width={table.getTotalSize()}>
-        <TableHeader table={table} />
-        <TableBody table={table} />
-      </table>
-      <Pagination table={table} />
+      <div className="m-auto flex w-full max-w-screen-2xl flex-col justify-center">
+        <Filters
+          columnFilters={columnFilters}
+          setColumnFilters={setColumnFilters}
+        />
+        <table className="table-fixed border-separate border-spacing-y-1">
+          <TableHeader table={table} />
+          <TableBody table={table} />
+        </table>
+        <Pagination table={table} />
+      </div>
     </>
   ) : (
     <Error message={error} />
