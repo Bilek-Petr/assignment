@@ -1,5 +1,7 @@
 import React from "react";
 import TableCell from "./TableCell";
+import CategoryCell from "./CategoryCell";
+import { getCellClassNames } from "../../utilities.js/getCellClassNames";
 
 export default function TableRow({ row }) {
   return (
@@ -7,18 +9,26 @@ export default function TableRow({ row }) {
       key={row.id}
       className="cursor-pointer bg-white shadow-sm transition-colors hover:bg-cyan-100"
     >
-      {row.getVisibleCells().map((cell, index) => (
-        <td
-          key={cell.id}
-          className={`p-1 ${
-            cell.column.columnDef.accessorKey === "name" && "font-bold"
-          } ${index === 0 && "rounded-l-md"} ${
-            index === row.getVisibleCells().length - 1 && "rounded-r-md"
-          }`}
-        >
+      {row.getVisibleCells().map((cell, index) => {
+        const isCategoryCell = cell.column.columnDef.accessorKey === "category";
+        const cellContent = isCategoryCell ? (
+          <CategoryCell value={cell.getValue()} />
+        ) : (
           <TableCell key={cell.id} cell={cell} />
-        </td>
-      ))}
+        );
+
+        const cellClassNames = getCellClassNames(
+          cell,
+          index,
+          row.getVisibleCells().length,
+        );
+
+        return (
+          <td key={cell.id} className={cellClassNames}>
+            {cellContent}
+          </td>
+        );
+      })}
     </tr>
   );
 }
