@@ -14,7 +14,7 @@ export const getFormattedClients = async () => {
       category: client?.category?.value || "",
 
       // to trigger error.jsx uncomment the code below
-      // category: client?.category.value
+      // category: client?.category.value,
     }));
   } catch (error) {
     throw new Error("Fetch of clients has failed");
