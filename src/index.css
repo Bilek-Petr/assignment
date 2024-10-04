@@ -2,9 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+#root {
+  width: 100%;
+}
+
 body {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100svh;
+  background-color: #f2f4f6;
 }
