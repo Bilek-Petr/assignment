@@ -28,7 +28,7 @@ export default function Filters({ setColumnFilters }) {
         <input
           type="text"
           placeholder="Hledat..."
-          className="h-10 w-full rounded-full border-[1px] border-gray-300 bg-gray-100 pl-10 transition-all duration-300 ease-in-out hover:border-cyan-400 focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400"
+          className="h-10 w-full rounded-full border-[1px] pl-10 transition-all duration-300 ease-in-out hover:border-cyan-400 focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400"
           value={inputValue}
           onChange={handleInputChange}
         />
