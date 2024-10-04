@@ -12,8 +12,6 @@ export default function TableHeader({ table }) {
               key={header.id}
               style={{
                 width: `${header.column.getSize()}px`,
-                minWidth: `${header.column.columnDef.minSize}px`,
-                maxWidth: `${header.column.columnDef.maxSize}px`,
               }}
             >
               <div className="relative flex items-center justify-center gap-3 py-4">
@@ -33,9 +31,7 @@ export default function TableHeader({ table }) {
                 <div
                   onMouseDown={header.getResizeHandler()}
                   onTouchStart={header.getResizeHandler()}
-                  className={`absolute -right-[0.1rem] top-1.5 h-4/5 w-[1.5px] cursor-w-resize bg-accentMedium opacity-0 hover:bg-accentDark group-hover:opacity-100 ${
-                    header.column.getIsResizing() ? "w-2 bg-blue-500" : ""
-                  } transition-opacity duration-300 ease-in-out`}
+                  className="absolute -right-[0.1rem] top-1.5 h-4/5 w-[1.5px] cursor-w-resize bg-accentMedium opacity-0 transition-opacity duration-300 ease-in-out hover:bg-accentDark group-hover:opacity-100"
                 />
               </div>
             </th>
