@@ -22,7 +22,7 @@ export default function Filters({ setColumnFilters }) {
   }, [selectedFilter]);
 
   return (
-    <div className="flex gap-6">
+    <nav className="flex gap-6">
       <div className="relative w-1/3 max-w-80 py-2">
         <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 transform text-gray-400" />
         <input
@@ -39,6 +39,6 @@ export default function Filters({ setColumnFilters }) {
         setSelectedFilter={setSelectedFilter}
         setColumnFilters={setColumnFilters}
       />
-    </div>
+    </nav>
   );
 }
