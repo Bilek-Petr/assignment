@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getFormattedClients } from "../services/formattedApi";
+import { getFormattedClients } from "../utilities.js/formattedApi";
 
 export default function useClientData() {
   const [data, setData] = useState([]);
