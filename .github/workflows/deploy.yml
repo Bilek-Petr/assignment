@@ -25,7 +25,7 @@ jobs:
           VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
           VITE_API_USER: ${{ secrets.VITE_API_USER }}
-          VITEINSTANCE_NAME: ${{ secrets.VITE_INSTANCE_NAME }}
+          VITE_INSTANCE_NAME: ${{ secrets.VITE_INSTANCE_NAME }}
         run: npm run build
 
       - name: Upload production-ready build files
