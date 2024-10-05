@@ -14,7 +14,7 @@ export default function TableHeader({ table }) {
                 width: `${header.column.getSize()}px`,
               }}
             >
-              <div className="relative flex items-center gap-3 py-4">
+              <div className="relative flex items-center gap-3 overflow-hidden py-4">
                 {flexRender(
                   header.column.columnDef.header,
                   header.getContext(),
