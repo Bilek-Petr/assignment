@@ -3,9 +3,9 @@ import ClientTable from "./components/ClientTable";
 
 function App() {
   return (
-    <>
-      <ClientTable></ClientTable>
-    </>
+    <main>
+      <ClientTable />
+    </main>
   );
 }
 
