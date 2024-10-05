@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import manageClientData from "../hooks/manageClientData";
 import {
   useReactTable,
   getCoreRowModel,
@@ -6,63 +7,29 @@ import {
   getSortedRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-import { getFormattedClients } from "../services/formattedApi";
 import Filters from "./Filters";
 import TableHeader from "./Table/TableHeader";
 import TableBody from "./Table/TableBody";
 import Pagination from "./Table/Pagination";
 import Loading from "./Loading";
 import Error from "./Error";
-
-export const columns = [
-  {
-    accessorKey: "name",
-    header: "Název/Jméno",
-  },
-  {
-    accessorKey: "rating",
-    header: "Rating",
-    size: 20,
-  },
-  {
-    accessorKey: "ownerFullName",
-    header: "Vlastník",
-  },
-  {
-    accessorKey: "regNumber",
-    header: "IČO",
-  },
-  { accessorKey: "city", header: "Město" },
-  {
-    accessorKey: "category",
-    header: "Kategorie",
-  },
-];
+import Banner from "./Banner";
+import { clientTableColumns } from "./config/tableColumns";
 
 export default function ClientTable() {
-  const [data, setData] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [columnFilters, setColumnFilters] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const formattedData = await getFormattedClients();
-        setData(formattedData);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const {
+    data,
+    error,
+    loading,
+    columnFilters,
+    setColumnFilters,
+    selectedRowData,
+    setSelectedRowData,
+  } = manageClientData();
 
   const table = useReactTable({
     data,
-    columns,
+    columns: clientTableColumns,
     state: {
       columnFilters,
     },
@@ -73,25 +40,30 @@ export default function ClientTable() {
     columnResizeMode: "onChange",
   });
 
-  if (loading) {
-    return <Loading />;
-  }
+  const onRowClick = (row) => {
+    setSelectedRowData(row.original);
+  };
 
-  return !error ? (
-    <>
-      <div className="m-auto flex w-full max-w-screen-2xl flex-col justify-center">
-        <Filters
-          columnFilters={columnFilters}
-          setColumnFilters={setColumnFilters}
-        />
-        <table className="table-fixed border-separate border-spacing-y-1">
-          <TableHeader table={table} />
-          <TableBody table={table} />
-        </table>
-        <Pagination table={table} />
-      </div>
-    </>
-  ) : (
-    <Error message={error} />
+  if (loading) return <Loading />;
+  if (error) return <Error message={error} />;
+
+  return (
+    <div className="m-auto mt-12 w-3/4">
+      <Filters
+        columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
+      />
+      <table className="w-full table-fixed border-separate border-spacing-y-1">
+        <TableHeader table={table} />
+        <TableBody table={table} onRowClick={onRowClick} />
+      </table>
+      <Pagination table={table} />
+
+      {selectedRowData && (
+        <section className="mt-6 flex justify-center">
+          <Banner rowData={selectedRowData} />
+        </section>
+      )}
+    </div>
   );
 }
