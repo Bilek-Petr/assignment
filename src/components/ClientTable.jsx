@@ -48,7 +48,7 @@ export default function ClientTable() {
   if (error) return <Error message={error} />;
 
   return (
-    <div className="m-auto mt-12 w-3/4">
+    <div className="m-auto mt-12 w-full p-10 2xl:w-3/4">
       <Filters
         columnFilters={columnFilters}
         setColumnFilters={setColumnFilters}
