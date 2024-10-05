@@ -1,5 +1,5 @@
 import React from "react";
-import manageClientData from "../hooks/manageClientData";
+import useClientData from "../hooks/useClientData";
 import {
   useReactTable,
   getCoreRowModel,
@@ -25,7 +25,7 @@ export default function ClientTable() {
     setColumnFilters,
     selectedRowData,
     setSelectedRowData,
-  } = manageClientData();
+  } = useClientData();
 
   const table = useReactTable({
     data,
